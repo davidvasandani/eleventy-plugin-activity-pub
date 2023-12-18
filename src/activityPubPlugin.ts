@@ -165,14 +165,19 @@ export const activityPubPlugin = (
 		);
 
 		eleventyConfig.on("eleventy.before", ({ dir }) => {
-			fs.mkdirSync(`${dir.input}/outbox`);
+			const outboxDir = `${dir.input}/outbox`;
+		
+			// Create the directory if it does not exist. Do nothing if it exists.
+			fs.mkdirSync(outboxDir, { recursive: true });
+		
+			// Copy the files as before
 			fs.copyFileSync(
 				`${__dirname}/../src/templates/outbox.njk`,
-				path.resolve(`./${dir.input}/outbox/outbox.njk`)
+				path.resolve(`${outboxDir}/outbox.njk`)
 			);
 			fs.copyFileSync(
 				`${__dirname}/../src/templates/outbox_page.njk`,
-				`./${dir.input}/outbox/outbox_page.njk`
+				`${outboxDir}/outbox_page.njk`
 			);
 		});
 
